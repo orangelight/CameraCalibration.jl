@@ -15,31 +15,33 @@ function estimateHomography(a::Array{Real,2}, b::Array{Real,2})
     nB = getNormalisationMatrix(a)
     m = zeros((2*n, 9))
 
+    #construct matrix for solving
     for j  = 1:(n-1)
         k = 2*j
         ap = nA*a[:,n]
         ab = nB*b[:,n]
+        # M_{k,*} = (x′_a, y′_a, 1, 0, 0, 0, −x′_ax′_b , −y′_ax′_b, −x′_b )
         m[:,k-1] = [ap[1] ap[2] 1 0 0 0 -ap[1]*bp[1] -ap[2]*bp[1] -bp[1]]
+        # M_{k+1,*} = (0, 0, 0, x′_a , y′_a , 1, −x′_ay′_b, −y′_ay′_b , −y′_b )
         m[:,k] = [0 0 0 ap[1] ap[2] 1 -ap[1]*bp[2] -ap[2]*bp[2] -bp[2]]
     end
 
     #solve
     u, d, vt = svd(m)
 end
+"""
+getNormalisationMatrix - returns normalisation matrix of points x
+'''
 
+'''
+"""
 function getNormalisationMatrix(x::Array{Real, 2})
     m = mean(x[1:2, :], dims = 2)
     v = var(x[1:2, :], dims = 2, corrected = false, mean = m)
-    #cx = zeros(size(x))
-    #cx[1,:] = x[1,:] .- m[1]
-    #cx[2,:] = x[2,:] .- m[2]
-    #cx[3,:] .= 1
+    #scale values (182)
     sx = sqrt(2.0/v[1])
     sy = sqrt(2.0/v[2])
-    #avgdist = mean(sqrt.(cx[1,:].^2 .+ cx[2,:].^2))
-    #s = sqrt(2.0)/avgdist
-    #normalization matrix (181)
-    #N = [s 0 -s*m[1]; 0 s -s*m[2]; 0 0 1]
+    #construct normalisation matrix (181)
     n = [sx 0 -sx*m[1]; 0 sy -sy*m[2]; 0 0 1]
     n
 end

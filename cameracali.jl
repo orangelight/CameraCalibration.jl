@@ -53,8 +53,7 @@ function getNormalisationMatrix(x::Array{<:Real, 2})
     sx = sqrt(2.0/v[1])
     sy = sqrt(2.0/v[2])
     #construct normalisation matrix (181)
-    n = [sx 0 -sx*m[1]; 0 sy -sy*m[2]; 0 0 1]
-    n
+    return [sx 0 -sx*m[1]; 0 sy -sy*m[2]; 0 0 1]
 end
 
 function refineHomography(h::Array{<:Real, 2}, a::Array{<:Real, 2}, b::Array{<:Real, 2})

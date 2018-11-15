@@ -82,12 +82,33 @@ function getCameraIntrinsics(hs::Array{Array{<:Real,2},1})
     v = zeros((2*m, 6))
 
     for i = 1:m
-
+        v[2*i-1,:] = getIntrinsicRowVector(1,2,hs[i])
+        v[2*i,:] = getIntrinsicRowVector(1,1,hs[i]) - getIntrinsicRowVector(2,2,hs[i])
     end
+
+    #solve
+    u, s, v = svd(m, full = true)
+    b = reshape(v[:,9], 3, 3)'
+
+    w = b[1]*b[3]*b[6] - (b[2]^2)*b[6] - b[1]*(b[5]^2) + 2*b[2]*b[4]*b[5] - b[3]*(b[4]^2) # (104)
+    d = b[1]*b[3] - b[2]^2 # (105)
+    α = sqrt(w/(d*b[1])) # (99)
+    β = sqrt(w/d^2 *b[1]) # (100)
+    γ = sqrt(w/(d^2 * b[1])) * b[2] # (101)
+    uc = (b[2]*b[5] - b[3]*b[4])/d
+    vc = (b[2]*b[4] - b[1]*b[5])/d
+    return [α γ uc
+            0 β vc
+            0 0 1]
 end
 
 function getIntrinsicRowVector(p::Int64, q::Int64,  h::Array{<:Real,2})
-
+    return [h[1,p]*h[1,q]
+            h[1,p]*h[2,q]+h[2,p]*h[1,q]
+            h[2,p]*h[2,q]
+            h[3,p]*h[1,q]+h[1,p]*h[3,q]
+            h[3,p]*h[2,q]+h[2,p]*h[3,q]
+            h[3,p]*h[3,q]]'
 end
 
 """

@@ -32,13 +32,11 @@ function estimateHomography(a::Array{<:Real,2}, b::Array{<:Real,2})
         m[k-1,:] = [ap[1] ap[2] 1 0 0 0 -ap[1]*bp[1] -ap[2]*bp[1] -bp[1]]
         # M_{k+1,*} = (0, 0, 0, x′_a , y′_a , 1, −x′_ay′_b, −y′_ay′_b , −y′_b )
         m[k,:] = [0 0 0 ap[1] ap[2] 1 -ap[1]*bp[2] -ap[2]*bp[2] -bp[2]]
-
     end
 
     #solve
     u, d, v = svd(m, full = true)
     h = v[:,9] #last column of v
-	println(h)
     hp = reshape(h, 3, 3)'
     return inv(nB)*hp*nA
 end
@@ -59,7 +57,36 @@ function getNormalisationMatrix(x::Array{<:Real, 2})
     n
 end
 
-function RefineHomography(h::Array{<:Real, 2}, a::Array{<:Real, 2}, b::Array{<:Real, 2})
+function refineHomography(h::Array{<:Real, 2}, a::Array{<:Real, 2}, b::Array{<:Real, 2})
+
+end
+
+
+function calibrate(x::Array{<:Real,2}, u::Array{Array{<:Real,2},1})
+    hListInit = getHomographies(x,u)
+    aInit = getCameraIntrinsics(hListInit)
+end
+
+function getHomographies(x::Array{<:Real,2}, u::Array{Array{<:Real,2},1})
+    m = size(u)[2]
+    hList = Array{Float64,2}[]
+    for i = 1:m
+        hInit = estimateHomography(x, u[i])
+        # TODO refineHomography
+        push!(hList, hInit)
+    return hList
+end
+
+function getCameraIntrinsics(hs::Array{Array{<:Real,2},1})
+    m = size(hs)[1]
+    v = zeros((2*m, 6))
+
+    for i = 1:m
+
+    end
+end
+
+function getIntrinsicRowVector(p::Int64, q::Int64,  h::Array{<:Real,2})
 
 end
 

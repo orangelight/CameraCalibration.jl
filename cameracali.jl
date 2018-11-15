@@ -1,3 +1,11 @@
+"""
+Based on:
+Wilhelm Burger: Zhang’s Camera Calibration Algorithm: In-Depth Tutorial and Implementation,
+Technical Report HGB16-05, University of Applied Sciences Upper Austria, School of
+Informatics, Communications and Media, Dept. of Digital Media, Hagenberg, Austria, May
+2016. DOI: 10.13140/RG.2.1.1166.1688, http://staff.fh-hagenberg.at/burger/
+"""
+
 using Statistics, LinearAlgebra
 """
 estimateHomography - returns the estimated homography matrix H, such that b_j = H*a_j.
@@ -49,6 +57,10 @@ function getNormalisationMatrix(x::Array{<:Real, 2})
     #construct normalisation matrix (181)
     n = [sx 0 -sx*m[1]; 0 sy -sy*m[2]; 0 0 1]
     n
+end
+
+function RefineHomography(h::Array{<:Real, 2}, a::Array{<:Real, 2}, b::Array{<:Real, 2})
+
 end
 
 """

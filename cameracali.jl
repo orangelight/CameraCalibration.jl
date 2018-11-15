@@ -65,6 +65,7 @@ end
 function calibrate(x::Array{<:Real,2}, u::Array{Array{<:Real,2},1})
     hListInit = getHomographies(x,u)
     aInit = getCameraIntrinsics(hListInit)
+    wInit = getExtrinsics(aInit,hListInit)
 end
 
 function getHomographies(x::Array{<:Real,2}, u::Array{Array{<:Real,2},1})
@@ -111,6 +112,9 @@ function getIntrinsicRowVector(p::Int64, q::Int64,  h::Array{<:Real,2})
             h[3,p]*h[3,q]]'
 end
 
+function getExtrinsics(a::Array{<:Real,2},hs::Array{Array{<:Real,2},1})
+
+end
 """
 tests
 asample = [182 535 171 537; 350 358 553 563; 1 1 1 1]

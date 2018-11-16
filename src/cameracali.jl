@@ -139,8 +139,22 @@ function getIntrinsicRowVector(p::Int64, q::Int64,  h::Array{<:Real,2})
             h[3,p]*h[3,q]]'
 end
 
-function getExtrinsics(a::Array{<:Real,2},hs::Array{Array{<:Real,2},1})
 
+"""
+a is intrinsic matrix hs is list of homographies
+
+"""
+function getExtrinsics(a::Array{<:Real,2},hs::Array{Array{T1,2},1}) where T1 <: Real
+    wList = Array{Float64,2}[]
+    m = size(hs)[1]
+
+    for i = 1:m
+
+    end
+end
+
+function estimateViewTransorm(a::Array{<:Real,2}, h::Array{<:Real,2})
+    
 end
 """
 tests

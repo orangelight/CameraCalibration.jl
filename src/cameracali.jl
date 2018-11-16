@@ -37,9 +37,12 @@ function estimateHomography(a::Array{<:Real,2}, b::Array{<:Real,2})
     #solve
     u, d, v = svd(m, full = true)
     h = v[:,9] #last column of v
-    hp = reshape(h, 3, 3)' #remember transpose
-    hp = inv(nB)*hp*nA
-    return hp./hp[3,3]
+    H = [h[1] h[2] h[3];
+         h[4] h[5] h[6]
+         h[7] h[8] h[9]]
+
+    H = inv(nB)*H*nA
+    return H./H[3,3]
 end
 """
 getNormalisationMatrix - returns normalisation matrix of points x
@@ -111,7 +114,7 @@ function getCameraIntrinsicsB(hs::Array{Array{T1,2},1}) where T1 <: Real
 
     for i = 1:m
         V[2*i-1,:] = getIntrinsicRowVector(1,2,hs[i])
-        V[2*i,:] = getIntrinsicRowVector(1,1,hs[i]) - getIntrinsicRowVector(2,2,hs[i])
+        V[2*i,:] = getIntrinsicRowVector(1,1,hs[i]) .- getIntrinsicRowVector(2,2,hs[i])
     end
 
     #solve

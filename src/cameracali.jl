@@ -149,12 +149,25 @@ function getExtrinsics(a::Array{<:Real,2},hs::Array{Array{T1,2},1}) where T1 <: 
     m = size(hs)[1]
 
     for i = 1:m
-
+        push!(wList, estimateViewTransorm(a, hs[i]))
     end
+    return wList
 end
 
 function estimateViewTransorm(a::Array{<:Real,2}, h::Array{<:Real,2})
-    
+    κ = 1/norm(inv(a)*h[:,1])
+    r0 = κ*inv(a)*h[:,1]
+    r1 = κ*inv(a)*h[:,2]
+    r2= cross(r0,r1)
+    R = zeros((3, 3))
+    R[:,1] = r0
+    R[:,2] = r1
+    R[:,3] = r2
+    # make true rotation matrix
+    u, s, v = svd(R, full = true)
+    R = u*v'
+    t = κ*inv(a)*h[:,3]
+    return hcat(R,t)
 end
 """
 tests

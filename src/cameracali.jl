@@ -121,7 +121,7 @@ function getCameraIntrinsicsB(hs::Array{Array{<:Real,2},1})
              b[2] b[3] b[5]
              b[4] b[5] b[6]]
     C = cholesky(bInit)
-    return inv(C.L)' * L[3,3]
+    return inv(C.L)' * C.L[3,3]
 end
 
 function getIntrinsicRowVector(p::Int64, q::Int64,  h::Array{<:Real,2})

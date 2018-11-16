@@ -165,7 +165,7 @@ function estimateViewTransorm(a::Array{<:Real,2}, h::Array{<:Real,2})
     R[:,3] = r2
     # make true rotation matrix
     u, s, v = svd(R, full = true)
-    R = u*v'
+    R = v*u'
     t = κ*inv(a)*h[:,3]
     return hcat(R,t)
 end

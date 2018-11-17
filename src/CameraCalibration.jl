@@ -5,7 +5,7 @@ Technical Report HGB16-05, University of Applied Sciences Upper Austria, School 
 Informatics, Communications and Media, Dept. of Digital Media, Hagenberg, Austria, May
 2016. DOI: 10.13140/RG.2.1.1166.1688, http://staff.fh-hagenberg.at/burger/
 """
-
+module CameraCalibration
 using Statistics, LinearAlgebra
 """
 estimateHomography - returns the estimated homography matrix H, such that b_j = H*a_j.
@@ -68,7 +68,7 @@ end
 function calibrate(x::Array{<:Real,2}, u::Array{Array{T1,2},1}) where T1 <: Real
     hListInit = getHomographies(x,u)
     aInit = getCameraIntrinsics(hListInit)
-    wInit = getExtrinsics(aInit,hListInit)
+    #wInit = getExtrinsics(aInit,hListInit)
 end
 
 function getHomographies(x::Array{<:Real,2}, u::Array{Array{T1,2},1}) where T1 <: Real
@@ -169,6 +169,8 @@ function estimateViewTransorm(a::Array{<:Real,2}, h::Array{<:Real,2})
     t = κ*inv(a)*h[:,3]
     return hcat(R,t)
 end
+end  # module CameraCalib
+
 """
 tests
 asample = [182 535 171 537; 350 358 553 563; 1 1 1 1]

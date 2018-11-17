@@ -1,0 +1,6 @@
+authors = ["Alex Deneau <alex.deneau17@gmail.com>"]
+name = "CameraCalibration"
+uuid = "d405b960-ea23-11e8-264a-af8c8e3eb9f8"
+version = "0.1.0"
+
+[deps]

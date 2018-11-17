@@ -7,6 +7,7 @@ Informatics, Communications and Media, Dept. of Digital Media, Hagenberg, Austri
 """
 module CameraCalibration
 using Statistics, LinearAlgebra
+export estimateHomography, calibrate, getHomographies, getCameraIntrinsics, getExtrinsics, getCameraIntrinsicsB
 """
 estimateHomography - returns the estimated homography matrix H, such that b_j = H*a_j.
 '''

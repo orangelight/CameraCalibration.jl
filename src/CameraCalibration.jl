@@ -68,7 +68,7 @@ end
 
 function calibrate(x::Array{<:Real,2}, u::Array{Array{T1,2},1}) where T1 <: Real
     hListInit = getHomographies(x,u)
-    aInit = getCameraIntrinsics(hListInit)
+    aInit = getCameraIntrinsicsB(hListInit)
     #wInit = getExtrinsics(aInit,hListInit)
 end
 

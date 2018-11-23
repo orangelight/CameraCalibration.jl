@@ -72,7 +72,7 @@ end
 function homographyVal(x::Array{<:Real,2}, h::Array{<:Real, 1})
     n = size(x)[2]
     y = zoeros(2*n)
-    for j = 1:N
+    for j = 1:n
         w = h[7]*x[1,j] + h[8]*x[2,j]+h[9]
         y[j*2-1] = (h[1]*x[1,j] + h[2]*x[2,j]+h[3])/w
         y[j*2] = (h[4]*x[1,j] + h[5]*x[2,j]+h[6])/w
@@ -81,7 +81,16 @@ function homographyVal(x::Array{<:Real,2}, h::Array{<:Real, 1})
 end
 
 function homographyJac(x::Array{<:Real,2}, h::Array{<:Real, 1})
-    
+    n = size(x)[2]
+    J = zeros((2*n, 9))
+    for j = 1:n
+        sx = h[1]*x[1,j]+h[2]*x[2,j] + h[3]
+        sy = h[4]*x[1,j]+h[5]*x[2,j] + h[6]
+        w = h[7]*x[1,j]+h[8]*x[2,j] + h[9]
+        J[2j-1,:]=[x[1,j]/w x[2,j]/w 1/w 0 0 0 -sx*x[1,j]/(w^2) -sx*x[2,j]/(w^2) -sx/(w^2)]
+        J[2j,:]=[0 0 0 x[1,j]/w x[2,j]/w 1/w -sy*x[1,j]/(w^2) -sy*x[2,j]/(w^2) -sy/(w^2)]
+    end
+    return J
 end
 
 function calibrate(x::Array{<:Real,2}, u::Array{Array{T1,2},1}) where T1 <: Real

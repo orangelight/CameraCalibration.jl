@@ -62,6 +62,14 @@ function getNormalisationMatrix(x::Array{<:Real, 2})
 end
 
 function refineHomography(h::Array{<:Real, 2}, a::Array{<:Real, 2}, b::Array{<:Real, 2})
+    n = size(a)[2]
+    X = zeros((2,2*n))
+    Y = zoeros((2,2*n))
+    for i = 1:n
+
+end
+
+function homographyVal(x::Array{<:Real,2}, h::Array{<:Real, 1})
 
 end
 
@@ -188,7 +196,7 @@ imgpoints = Array{Float64, 2}[]
         push!(imgpoints, vcat(convert(Array{Float64, 2}, CSV.File(string("./test/imgpoints", i, ".csv"), header = false) |> DataFrame)', ones(1, 35)))
     end
 
-
+using Plots
 cord = [-ex[i][:,1:3]'*ex[i][:,4] for i in 1:11]
 p = scatter([cord[i][1] for i = 1:11], [cord[i][2] for i = 1:11], [cord[i][3] for i = 1:11],marker=:circle,linewidth=0, group = 1:11)
 plot(p, xlabel="X",ylabel="Y",zlabel="Z", size = (800, 800))

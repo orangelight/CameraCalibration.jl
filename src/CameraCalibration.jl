@@ -70,9 +70,19 @@ function refineHomography(h::Array{<:Real, 2}, a::Array{<:Real, 2}, b::Array{<:R
 end
 
 function homographyVal(x::Array{<:Real,2}, h::Array{<:Real, 1})
-
+    n = size(x)[2]
+    y = zoeros(2*n)
+    for j = 1:N
+        w = h[7]*x[1,j] + h[8]*x[2,j]+h[9]
+        y[j*2-1] = (h[1]*x[1,j] + h[2]*x[2,j]+h[3])/w
+        y[j*2] = (h[4]*x[1,j] + h[5]*x[2,j]+h[6])/w
+    end
+    return y
 end
 
+function homographyJac(x::Array{<:Real,2}, h::Array{<:Real, 1})
+    
+end
 
 function calibrate(x::Array{<:Real,2}, u::Array{Array{T1,2},1}) where T1 <: Real
     hListInit = getHomographies(x,u)

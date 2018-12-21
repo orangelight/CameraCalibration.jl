@@ -67,11 +67,12 @@ function refineHomography(h::Array{<:Real, 2}, a::Array{<:Real, 2}, b::Array{<:R
     Y = zoeros((2,2*n))
     for i = 1:n
 
+    end
 end
 
 function homographyVal(x::Array{<:Real,2}, h::Array{<:Real, 1})
     n = size(x)[2]
-    y = zoeros(2*n)
+    y = zeros(2*n)
     for j = 1:n
         w = h[7]*x[1,j] + h[8]*x[2,j]+h[9]
         y[j*2-1] = (h[1]*x[1,j] + h[2]*x[2,j]+h[3])/w
